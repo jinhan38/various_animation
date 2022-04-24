@@ -1,8 +1,11 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:various_animation/painter/j_painter.dart';
 
+import 'curves/sine_curve.dart';
+import 'curves/spring_curve.dart';
+import 'tween/custom_tween.dart';
 
 class AnimationScreen extends StatelessWidget {
   const AnimationScreen({Key? key}) : super(key: key);
@@ -19,8 +22,7 @@ class AnimationScreen extends StatelessWidget {
   static final tweenSequence = TweenSequence(
     <TweenSequenceItem<double>>[
       TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 0, end: 1.0)
-            .chain(CurveTween(curve: Curves.easeOut)),
+        tween: Tween<double>(begin: 0, end: 1.0).chain(CurveTween(curve: Curves.easeOut)),
         weight: 40.0,
       ),
       TweenSequenceItem<double>(
@@ -28,8 +30,7 @@ class AnimationScreen extends StatelessWidget {
         weight: 20.0,
       ),
       TweenSequenceItem<double>(
-        tween: Tween<double>(begin: 1.0, end: 0)
-            .chain(CurveTween(curve: Curves.easeIn)),
+        tween: Tween<double>(begin: 1.0, end: 0).chain(CurveTween(curve: Curves.easeIn)),
         weight: 40.0,
       ),
     ],
@@ -52,17 +53,13 @@ class AnimationScreen extends StatelessWidget {
         children: <Widget>[
           AnimationAndCurveDemo(
             label: 'Linear - EaseIn and EaseOut',
-            mainCurve: linearTween
-                .chain(CurveTween(curve: Curves.easeIn))
-                .chain(CurveTween(curve: Curves.easeOut)),
+            mainCurve: linearTween.chain(CurveTween(curve: Curves.easeIn)).chain(CurveTween(curve: Curves.easeOut)),
             duration: const Duration(seconds: 2),
             size: 200,
           ),
           AnimationAndCurveDemo(
             label: 'Linear - SawTooth',
-            mainCurve: linearTween
-                .chain(CurveTween(curve: Curves.bounceOut))
-                .chain(CurveTween(curve: sawToothCurve)),
+            mainCurve: linearTween.chain(CurveTween(curve: Curves.bounceOut)).chain(CurveTween(curve: sawToothCurve)),
             duration: const Duration(seconds: 7),
             size: 200,
           ),
@@ -85,77 +82,21 @@ class AnimationScreen extends StatelessWidget {
             kindOfAnimation: KindOfAnimation.repeat,
             size: 200,
           ),
-          // AnimationAndCurveDemo(
-          //   label: 'Custom Curve: Springy',
-          //   mainCurve: linearTween.chain(CurveTween(curve: const SpringCurve())),
-          //   duration: const Duration(seconds: 3),
-          //   size: 200,
-          // ),
-          // AnimationAndCurveDemo(
-          //   label: 'Custom Tween: Blocky',
-          //   mainCurve: CustomTweenExample(begin: 0, end: 1),
-          //   duration: const Duration(seconds: 1),
-          //   size: 200,
-          // ),
+          AnimationAndCurveDemo(
+            label: 'Custom Curve: Springy',
+            mainCurve: linearTween.chain(CurveTween(curve: const SpringCurve())),
+            duration: const Duration(seconds: 3),
+            size: 200,
+          ),
+          AnimationAndCurveDemo(
+            label: 'Custom Tween: Blocky',
+            mainCurve: CustomTween(begin: 0, end: 1),
+            duration: const Duration(seconds: 1),
+            size: 200,
+          ),
         ],
       ),
     );
-  }
-}
-
-/// An example illustrating how to create your own Tween Class.
-/// For more examples take a look at ColorTween, RectTween, IntTwee, etc.
-class CustomTweenExample extends Tween<double> {
-  CustomTweenExample({
-    required double begin,
-    required double end,
-  }) : super(begin: begin, end: end);
-
-  @override
-  double lerp(double t) {
-    final middle = (end! - begin!) / 2;
-    if (t < 0.2) {
-      return super.lerp(begin!);
-    } else if (t < 0.4) {
-      return super.lerp(middle);
-    } else if (t < 0.6) {
-      return super.lerp(end!);
-    } else if (t < 0.8) {
-      return super.lerp(middle);
-    }
-    return super.lerp(end!);
-  }
-}
-
-
-/// An example demonstrating how to create your own Curve
-/// This example implements a sine curve
-class SineCurve extends Curve {
-  const SineCurve({this.count = 3});
-
-  final double count;
-
-  // t = x
-  @override
-  double transformInternal(double t) {
-    var val = sin(count * 2 * pi * t) * 0.5 + 0.5;
-    return val; //f(x)
-  }
-}
-
-/// An example demonstrating how to create your own Curve
-/// This example implements a spring curve
-class SpringCurve extends Curve {
-  const SpringCurve({
-    this.a = 0.15,
-    this.w = 19.4,
-  });
-  final double a;
-  final double w;
-
-  @override
-  double transformInternal(double t) {
-    return -(pow(e, -t / a) * cos(t * w)) + 1;
   }
 }
 
@@ -235,7 +176,6 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
       _animationController.repeat();
     } else {
       _animationController.repeat(reverse: true);
-      ;
     }
   }
 
@@ -256,23 +196,27 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
           child: Text(_label),
         ),
         Expanded(
-            child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return Align(
-                alignment: Alignment(
-                  lerpDouble(-1, 1, _mainCurve.evaluate(_animationController))!,
-                  0,
-                ),
-                child: child,
-              );
-            },
-            child: const SizedBox(width: 100,height: 100,child: Icon(Icons.star),),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Align(
+                  alignment: Alignment(
+                    lerpDouble(-1, 1, _mainCurve.evaluate(_animationController))!,
+                    0,
+                  ),
+                  child: child,
+                );
+              },
+              child: const SizedBox(
+                width: 100,
+                height: 100,
+                child: Icon(Icons.star),
+              ),
+            ),
           ),
-        ),),
-
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
@@ -285,7 +229,6 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
           child: AnimatedBuilder(
             animation: _animationController,
             builder: (_, child) {
-              // rest the follow path when the controller is finished
               if (intervalValue >= _animationController.value) {
                 followPath.reset();
               }
@@ -294,16 +237,26 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
               final val = _mainCurve.evaluate(_animationController);
               followPath.lineTo(_animationController.value * _size, -val * _size);
 
+              Paint followPaint = Paint();
+              followPaint.color = Colors.blue;
+              followPaint.style = PaintingStyle.stroke;
+              followPaint.strokeWidth = 4;
+              Paint borderPaint = Paint();
+              borderPaint.color = Colors.black;
+              borderPaint.style = PaintingStyle.fill;
+              borderPaint.strokeWidth = 2;
               return CustomPaint(
-                painter: GraphPainter(
-                  shadowPath: _shadowPath,
+                painter: JPainter(
                   followPath: followPath,
-                  comparePath: _comparePath,
                   currentPoint: Offset(
                     _animationController.value * _size,
                     val * _size,
                   ),
-                  graphSize: _size,
+                  chartSize: _size,
+                  backgroundPaint: Paint()..color = Colors.grey[200]!,
+                  pointPaint: Paint()..color = Colors.red,
+                  borderPaint: borderPaint,
+                  followPaint: followPaint,
                 ),
                 child: Container(),
               );
@@ -312,76 +265,5 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
         ),
       ],
     );
-  }
-}
-
-
-
-class GraphPainter extends CustomPainter {
-  const GraphPainter({
-    required this.currentPoint,
-    required this.shadowPath,
-    required this.followPath,
-    this.comparePath,
-    required this.graphSize,
-  });
-
-  final Offset currentPoint;
-  final Path shadowPath;
-  final Path followPath;
-  final Path? comparePath;
-  final double graphSize;
-
-  static final backgroundPaint = Paint()..color = Colors.grey[200]!;
-  static final currentPointPaint = Paint()..color = Colors.red;
-  static final shadowPaint = Paint()
-    ..color = Colors.grey
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 3;
-  static final comparePaint = Paint()
-    ..color = Colors.green[500]!
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 2;
-  static final followPaint = Paint()
-    ..color = Colors.blue
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 4;
-  static final borderPaint = Paint()
-    ..color = Colors.grey[700]!
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 3;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    _drawBackground(canvas, size);
-    canvas.translate(
-        size.width / 2 - graphSize / 2, size.height / 2 - graphSize / 2);
-    _drawBorder(canvas, size);
-    canvas.translate(0, graphSize);
-    if (comparePath != null) {
-      canvas.drawPath(comparePath!, comparePaint);
-    }
-    canvas
-      ..drawPath(shadowPath, shadowPaint)
-      ..drawPath(followPath, followPaint)
-      ..drawCircle(
-          Offset(currentPoint.dx, -currentPoint.dy), 4, currentPointPaint);
-  }
-
-  void _drawBackground(Canvas canvas, Size size) {
-    canvas.drawRect(
-        Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
-  }
-
-  void _drawBorder(Canvas canvas, Size size) {
-    canvas
-      ..drawLine(const Offset(0, 0), Offset(0, graphSize), borderPaint)
-      ..drawLine(
-          Offset(0, graphSize), Offset(graphSize, graphSize), borderPaint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
   }
 }
