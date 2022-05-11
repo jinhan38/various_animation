@@ -49,6 +49,7 @@ class AnimationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: PageView(
         children: <Widget>[
           AnimationAndCurveDemo(
@@ -150,6 +151,7 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
   @override
   void initState() {
     super.initState();
+    print('_mainCurve : $_mainCurve');
 
     _animationController = AnimationController(vsync: this, duration: _duration);
     _shadowPath = _buildGraph(_mainCurve);
