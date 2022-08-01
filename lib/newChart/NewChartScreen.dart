@@ -61,6 +61,7 @@ class _NewChartScreenState extends State<NewChartScreen>
 
                     /// Curvs의 Tween 배열 값을 적용해서 계산한 값을 리턴한다.
                     final val = _mainCurve.evaluate(_animationController);
+                    print(val);
                     followPath.lineTo(
                         _animationController.value * _size, -val * _size);
                     Paint followPaint = Paint();

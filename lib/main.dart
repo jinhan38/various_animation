@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:various_animation/circleAnimation/CircleAnimation.dart';
+import 'package:various_animation/fourthChart/FourthChart.dart';
 import 'package:various_animation/newChart/NewChartScreen.dart';
 import 'package:various_animation/test/MyAnimationScreen.dart';
 
@@ -82,11 +84,27 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => NewChartScreen(
                                 mainCurve: tweenSequence,
-                            size: MediaQuery.of(context).size.width -100,
+                                size: MediaQuery.of(context).size.width - 100,
                               )),
                     );
                   },
-                  child: const Text("Third"))
+                  child: const Text("Third")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FourthChart()),
+                    );
+                  },
+                  child: const Text("Fourth")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CircleAnimation()),
+                    );
+                  },
+                  child: const Text("CircleAnimation")),
             ],
           ),
         ),
