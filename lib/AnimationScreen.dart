@@ -165,6 +165,7 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
     var path = Path();
     for (var t = 0 / 0; t <= 1; t += 0.01) {
       val = -animatable.transform(t) * _size;
+      print('t : $t, val : $val');
       path.lineTo(t * _size, val);
     }
     return path;
@@ -238,7 +239,7 @@ class _AnimationAndCurveDemoState extends State<AnimationAndCurveDemo> with Sing
 
               final val = _mainCurve.evaluate(_animationController);
               followPath.lineTo(_animationController.value * _size, -val * _size);
-
+              print('val : $val, controller : ${_animationController.value}');
               Paint followPaint = Paint();
               followPaint.color = Colors.blue;
               followPaint.style = PaintingStyle.stroke;

@@ -19,18 +19,14 @@ class _MyAnimationScreenState extends State<MyAnimationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MyAnimationScreen")),
-      body: PageView(
-        children: [
-          AnimationAndCurve(
-            label: "first",
-            mainCurve: linearTween
-                .chain(CurveTween(curve: Curves.easeIn))
-                .chain(CurveTween(curve: Curves.easeOut)),
-            duration: const Duration(seconds: 2),
-            size: 200,
-          )
-        ],
+      appBar: AppBar(title: Text("")),
+      body: AnimationAndCurve(
+        label: "first",
+        mainCurve: linearTween
+            .chain(CurveTween(curve: Curves.easeIn))
+            .chain(CurveTween(curve: Curves.easeOut)),
+        duration: const Duration(seconds: 2),
+        size: 200,
       ),
     );
   }
@@ -127,33 +123,30 @@ class _AnimationAndCurveState extends State<AnimationAndCurve>
     var followPath = Path();
     return Column(
       children: [
-        Text(_label),
-        Expanded(
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              /// Alignment에서 x, y 값 좌표
-              /// -1,-1 ㅣ  0,-1 ㅣ 1,-1
-              /// -1,0  ㅣ  0,0  ㅣ 1,0
-              /// -1,1  ㅣ  0,1  ㅣ 1,1
-              return Align(
-                alignment: Alignment(
-                  lerpDouble(-1, 1, _mainCurve.evaluate(_animationController))!,
-                  0,
-                ),
-                child: child,
-              );
-            },
-            child: const SizedBox(
-              width: 100,
-              height: 100,
-              child: Icon(Icons.star),
-            ),
-          ),
-        ),
-        ElevatedButton(
-            onPressed: _playAnimation, child: const Text("애니메이션 시작")),
-
+        // Text(_label),
+        // Expanded(
+        //   child: AnimatedBuilder(
+        //     animation: _animationController,
+        //     builder: (context, child) {
+        //       /// Alignment에서 x, y 값 좌표
+        //       /// -1,-1 ㅣ  0,-1 ㅣ 1,-1
+        //       /// -1,0  ㅣ  0,0  ㅣ 1,0
+        //       /// -1,1  ㅣ  0,1  ㅣ 1,1
+        //       return Align(
+        //         alignment: Alignment(
+        //           lerpDouble(-1, 1, _mainCurve.evaluate(_animationController))!,
+        //           0,
+        //         ),
+        //         child: child,
+        //       );
+        //     },
+        //     child: const SizedBox(
+        //       width: 100,
+        //       height: 100,
+        //       child: Icon(Icons.star),
+        //     ),
+        //   ),
+        // ),
         SizedBox(
           height: 300,
           child: AnimatedBuilder(
@@ -194,7 +187,8 @@ class _AnimationAndCurveState extends State<AnimationAndCurve>
                     val * _size,
                   ),
                   chartSize: _size,
-                  backgroundPaint: Paint()..color = Colors.grey[200]!,
+                  backgroundPaint: Paint()..color = Colors.white,
+                  // backgroundPaint: Paint()..color = Colors.grey[200]!,
                   pointPaint: Paint()..color = Colors.red,
                   borderPaint: borderPaint,
                   followPaint: followPaint,
@@ -204,6 +198,11 @@ class _AnimationAndCurveState extends State<AnimationAndCurve>
             },
           ),
         ),
+
+        SizedBox(height: 50),
+        ElevatedButton(
+            onPressed: _playAnimation, child: const Text("시작")),
+
       ],
     );
   }

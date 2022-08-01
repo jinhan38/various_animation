@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class JPainter extends CustomPainter {
+class NewPainter extends CustomPainter {
   final Offset currentPoint;
   final Path followPath;
   final double chartSize;
@@ -9,7 +9,7 @@ class JPainter extends CustomPainter {
   final Paint borderPaint;
   final Paint followPaint;
 
-  JPainter({
+  NewPainter({
     required this.currentPoint,
     required this.followPath,
     required this.chartSize,
@@ -21,6 +21,7 @@ class JPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+
     /// 배경 그리기
     _drawBackground(canvas, size, backgroundPaint);
 
@@ -34,35 +35,40 @@ class JPainter extends CustomPainter {
     /// 캔버스 위치 이동한 시점에서 시작 점 그리기
     _translateCanvas(canvas, 0, chartSize);
 
-    /// 현재 캔버스의 위치에서부터 그림을 그리기 시작한다.
     canvas
 
-      /// 라인
+    /// 라인
       ..drawPath(followPath, followPaint)
 
-      /// 끝 점
+    /// 끝 점
       ..drawCircle(Offset(currentPoint.dx, -currentPoint.dy), 8, pointPaint);
   }
 
-  /// 현재 painter의 배경
+  /// 배경색
   void _drawBackground(Canvas canvas, Size size, Paint paint) {
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
+    canvas.drawRect(Rect.fromLTRB(0, 0, size.width, size.height), paint);
   }
 
-  /// 차트 가로, 세로 기준 축 그리기
-  void _drawBorder(Canvas canvas, Size size, double chartSize, Paint paint) {
-    canvas
-      ..drawLine(const Offset(0, 0), Offset(0, chartSize), paint)
-      ..drawLine(Offset(0, chartSize), Offset(chartSize, chartSize), paint);
+  /// 차트 기준축 세우기
+  void _drawBorder(
+      Canvas canvas, Size size, double chartSize, Paint borderPaint) {
+    /// y 축
+    /// offset 1 : 시작점, offset2 : 도착점, paint 선의 형태
+    canvas.drawLine(const Offset(0, 0), Offset(0, chartSize), borderPaint);
+
+    /// x 축
+    canvas.drawLine(
+        Offset(0, chartSize), Offset(chartSize, chartSize), borderPaint);
   }
 
   /// 캔버스 위치 이동
+  /// 여기서는 가운데로 이동시킬 예정이다.
   _translateCanvas(Canvas canvas, double x, double y) {
     canvas.translate(x, y);
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
 }
