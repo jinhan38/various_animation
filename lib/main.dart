@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:various_animation/circleAnimation/CircleAnimation.dart';
 import 'package:various_animation/fourthChart/FourthChart.dart';
+import 'package:various_animation/myCircleAnimation/MyCircleAnimation.dart';
 import 'package:various_animation/newChart/NewChartScreen.dart';
 import 'package:various_animation/test/MyAnimationScreen.dart';
 
@@ -105,6 +106,14 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                   child: const Text("CircleAnimation")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyCircleAnimation()),
+                    );
+                  },
+                  child: const Text("MyCircleAnimation")),
             ],
           ),
         ),
