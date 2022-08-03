@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:various_animation/LineMoveAnimation/LineMoveAnimation.dart';
 import 'package:various_animation/circleAnimation/CircleAnimation.dart';
 import 'package:various_animation/fourthChart/FourthChart.dart';
 import 'package:various_animation/myCircleAnimation/MyCircleAnimation.dart';
@@ -114,6 +115,14 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                   child: const Text("MyCircleAnimation")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LineMoveAnimation()),
+                    );
+                  },
+                  child: const Text("LineMoveAnimation")),
             ],
           ),
         ),

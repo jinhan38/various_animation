@@ -51,18 +51,21 @@ class _MyCircleAnimationState extends State<MyCircleAnimation>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child:Center(
-          child: Container(
-            child: CustomPaint(
-              foregroundPainter: CirclePointerPainter(_radius, animation.value),
-              painter: CirclePainter(100),
-              child: Container(
-                width: 200,height: 200,
-              ),
+          child: Center(
+        child: Container(
+          child: CustomPaint(
+            foregroundPainter: CirclePointerPainter(
+              _radius,
+              animation.value,
+            ),
+            painter: CirclePainter(100),
+            child: Container(
+              width: 200,
+              height: 200,
             ),
           ),
-        )
-      ),
+        ),
+      )),
     );
   }
 }

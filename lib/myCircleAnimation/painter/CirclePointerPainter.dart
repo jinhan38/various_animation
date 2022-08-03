@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:various_animation/myCircleAnimation/painter/MathCircle.dart';
+
 class CirclePointerPainter extends CustomPainter {
   final double radius;
   final double radians;
 
-  CirclePointerPainter(this.radius, this.radians);
+  CirclePointerPainter(
+      this.radius, this.radians);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -36,13 +39,12 @@ class CirclePointerPainter extends CustomPainter {
 
     /// 포인터 그리기
     /// 중심점 세팅
+    /// 고정값
     Offset center = Offset(size.width / 2, size.height / 2);
 
     /// 삼각함수 이용하여 회전하는 pointer의 위치 구하기
-    Offset pointOnCircle = Offset(
-      radius * math.cos(radians) + center.dx,
-      radius * math.sin(radians) + center.dy,
-    );
+    Offset pointOnCircle =MathCircle.offset(radius , radians);
+
     canvas.drawCircle(pointOnCircle, 10, pointPaint);
 
     if (math.cos(radians) < 0.0) {
@@ -85,7 +87,7 @@ class CirclePointerPainter extends CustomPainter {
     var trianglePaint = Paint()
       ..color = Colors.teal
       ..strokeWidth = 2
-      ..style = PaintingStyle.fill  ;
+      ..style = PaintingStyle.fill;
     canvas.drawPath(path, trianglePaint);
   }
 
